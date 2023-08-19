@@ -1,62 +1,34 @@
-import 'esm';
-//import { LLMChain } from 'langchain/chains';
-import { OpenAI } from 'langchain/llms';
-//import { PromptTemplate } from 'langchain/prompts';
-import { ConversationChain } from 'langchain/chains';
-
-// dotenv の設定
+import axios from 'axios';
+import dotenv from 'dotenv';
 import 'dotenv/config';
+import { OpenAI } from 'langchain/llms';
 
-// export const run1 = async () => {
-//   // LLMの準備
-//   const llm = new OpenAI({ temperature: 0.9 });
+// .env ファイルから環境変数を読み込む
+dotenv.config();
 
-//   // LLMの呼び出し
-//   const res = await llm.call('コンピュータゲームを作る日本語の新会社名をを1つ提案してください');
-//   console.log(res);
-// };
+// OpenAIのAPIキーを環境変数から取得
 
-// export const run = async () => {
-//   // LLMの準備
-//   const llm = new OpenAI({ temperature: 0.9 });
+// LLMの準備
+const llm = new OpenAI({ temperature: 0.9 });
 
-//   // プロンプトテンプレートの準備
-//   const prompt = new PromptTemplate({
-//     inputVariables: ['product'],
-//     template: '{product}を作る日本語の新会社名をを1つ提案してください',
-//   });
+// 指定のURLから情報を読み込んで指定の行動を実行する関数
+const processURL = async (url: string) => {
+  try {
+    // URLからデータを取得
+    const response = await axios.get(url);
 
-//   // チェーンの準備
-//   const chain = new LLMChain({ llm, prompt });
+    // データを取得したら、ここで適切な行動を実行する
+    console.log('URLから取得したデータ:', response.data);
 
-//   // チェーンの実行
-//   const res = await chain.call({ product: '家庭用ロボット' });
-//   console.log(res['text']);
-// };
-
-export const run = async () => {
-  // LLMの準備
-  const llm = new OpenAI({ temperature: 0 });
-
-  // ConversationChainの準備
-  const chain = new ConversationChain({ llm });
-
-  // 会話の実行
-  const input1 = 'こんにちは!';
-  const res1 = await chain.call({ input: input1 });
-  console.log('Human:', input1);
-  console.log('AI:', res1['response']);
-
-  // 会話の実行
-  const input2 = 'AIさんの好きな料理は？';
-  const res2 = await chain.call({ input: input2 });
-  console.log('Human:', input2);
-  console.log('AI:', res2['response']);
-
-  // 会話の実行
-  const input3 = 'その料理の作り方は？';
-  const res3 = await chain.call({ input: input3 });
-  console.log('Human:', input3);
-  console.log('AI:', res3['response']);
+    // LLMにデータを入力として渡して応答を取得
+    const llmResponse = await llm.call(`データ:${response.data}`); // データを適切な形式で使用
+    console.log('LLMの応答:', llmResponse);
+  } catch (error: any) {
+    console.error('エラー:', error.message);
+  }
 };
-run();
+
+// 指定のURLを指定して処理を開始
+const targetURL =
+  'https://www.alphavantage.co/query?function=FX_DAILY&from_symbol=EUR&to_symbol=USD&apikey=demo'; // 実際のURLを指定
+processURL(targetURL);

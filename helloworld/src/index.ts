@@ -6,8 +6,6 @@ import { OpenAI } from 'langchain/llms';
 // .env ファイルから環境変数を読み込む
 dotenv.config();
 
-// OpenAIのAPIキーを環境変数から取得
-
 // LLMの準備
 const llm = new OpenAI({ temperature: 0.9 });
 
@@ -18,13 +16,28 @@ const processURL = async (url: string) => {
     const response = await axios.get(url);
 
     // データを取得したら、ここで適切な行動を実行する
-    console.log('URLから取得したデータ:', response.data);
+    //console.log('URLから取得したデータ:', response.data);
 
     // LLMにデータを入力として渡して応答を取得
-    const llmResponse = await llm.call(`データ:${response.data}`); // データを適切な形式で使用
+    const llmResponse = await generateLLMResponse(response.data); // LLMモデルによる文生成
     console.log('LLMの応答:', llmResponse);
   } catch (error: any) {
     console.error('エラー:', error.message);
+  }
+};
+
+// LLMモデルによる文生成
+const generateLLMResponse = async (data: any) => {
+  try {
+    // 買い時と売り時の情報を生成するための文生成リクエスト
+    const prompt = `データ:${data}\nあなたが買い時だと思う日時をdataからいくつか挙げてください。\nあなたが売り時だと思う日時をdataからいくつか挙げてください。`;
+
+    // LLMに文生成リクエストを送信
+    const llmResponse = await llm.call(prompt);
+    return llmResponse;
+  } catch (error) {
+    console.error('LLMエラー:', error);
+    return 'LLMの文生成中にエラーが発生しました。';
   }
 };
 

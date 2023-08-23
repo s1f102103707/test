@@ -29,7 +29,7 @@ const Judge5minData = async () => {
     const timestamps = Object.keys(minuteData['Time Series (5min)']);
     const prompt = `データ:${timestamps.join(
       ', '
-    )}\nあなたが買い時だと思う日時をデータからいくつかどのデータを評価して選んだかを明確にして理由と共に挙げてください。\nあなたが売り時だと思う日時をデータからいくつかどのデータを評価して選んだかを明確にして理由と共に挙げてください。`;
+    )}\nあなたが買い時だと思う日時をデータからどのデータを評価して選んだかを明確にして理由と共に一つ挙げてください。\nあなたが売り時だと思う日時をデータからどのデータを評価して選んだかを明確にして理由と共に一つ挙げてください。`;
 
     const llmResponse = await llm.call(prompt);
     console.log('LLMの応答:', llmResponse);
@@ -58,7 +58,7 @@ const JudgeDailyData = async () => {
     const timestamps = Object.keys(dailyData['Time Series (Daily)']);
     const prompt = `データ:${timestamps.join(
       ', '
-    )}\nあなたが買い時だと思う日時をデータからいくつかどのデータを評価して選んだかを明確にして理由と共に挙げてください。\nあなたが売り時だと思う日時をデータからいくつかどのデータを評価して選んだかを明確にして理由と共に挙げてください。`;
+    )}\nあなたが買い時だと思う日時をデータからどのデータを評価して選んだかを明確にして理由と共に一つ挙げてください。\nあなたが売り時だと思う日時をデータからどのデータを評価して選んだかを明確にして理由と共に一つ挙げてください。`;
 
     const llmResponse = await llm.call(prompt);
     console.log('LLMの応答:', llmResponse);

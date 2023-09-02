@@ -1,30 +1,28 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 
 function App() {
   const videoRef = useRef(null);
   const recorderRef = useRef(null);
 
-  useEffect(() => {
-    const constraints = { audio: false, video: true };
+  const constraints = { audio: true, video: true };
 
-    navigator.mediaDevices
-      .getUserMedia(constraints)
-      .then((stream) => {
-        videoRef.current.srcObject = stream;
+  navigator.mediaDevices
+    .getUserMedia(constraints)
+    .then((stream) => {
+      videoRef.current.srcObject = stream;
 
-        // メディアレコーダーを作成
-        recorderRef.current = new MediaRecorder(stream);
+      // メディアレコーダーを作成
+      recorderRef.current = new MediaRecorder(stream);
 
-        recorderRef.current.ondataavailable = function (e) {
-          var testvideo = document.getElementById("test");
-          var outputdata = window.URL.createObjectURL(e.data);
-          testvideo.src = outputdata;
-        };
-      })
-      .catch((err) => {
-        console.error("エラー:", err);
-      });
-  }, []);
+      recorderRef.current.ondataavailable = function (e) {
+        let testvideo = document.getElementById("test");
+        let outputdata = window.URL.createObjectURL(e.data);
+        testvideo.src = outputdata;
+      };
+    })
+    .catch((err) => {
+      console.error("エラー:", err);
+    });
 
   const startRecording = () => {
     if (recorderRef.current) {
@@ -47,5 +45,5 @@ function App() {
     </div>
   );
 }
-
+// <video id="test" autoPlay playsInline />ここに録画された映像が一時的に入る
 export default App;

@@ -10,13 +10,11 @@ function App() {
     .getUserMedia(constraints)
     .then((stream) => {
       videoRef.current.srcObject = stream;
-
-      // メディアレコーダーを作成
       recorderRef.current = new MediaRecorder(stream);
 
       recorderRef.current.ondataavailable = function (e) {
-        let testvideo = document.getElementById("test");
-        let outputdata = window.URL.createObjectURL(e.data);
+        let testvideo = document.getElementById("test"); //id='test'で動画を取得している
+        let outputdata = window.URL.createObjectURL(e.data); //録画された動画
         testvideo.src = outputdata;
       };
     })
@@ -45,5 +43,5 @@ function App() {
     </div>
   );
 }
-// <video id="test" autoPlay playsInline />ここに録画された映像が一時的に入る
+// <video id="test" autoPlay playsInline />これで録画された映像が表示される
 export default App;

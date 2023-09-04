@@ -13,7 +13,7 @@ function App() {
       recorderRef.current = new MediaRecorder(stream);
 
       recorderRef.current.ondataavailable = function (e) {
-        let testvideo = document.getElementById("test"); //id='test'で動画を取得している
+        let testvideo = document.getElementById("vision"); //id='test'で動画を取得している
         let outputdata = window.URL.createObjectURL(e.data); //録画された動画
         testvideo.src = outputdata;
       };
@@ -37,7 +37,7 @@ function App() {
   return (
     <div className="App">
       <video ref={videoRef} autoPlay playsInline muted />
-      <video id="test" autoPlay playsInline />
+      <video id="vision" autoPlay playsInline />
       <button onClick={startRecording}>start</button>
       <button onClick={stopRecording}>stop</button>
     </div>
@@ -45,3 +45,4 @@ function App() {
 }
 // <video id="test" autoPlay playsInline />これで録画された映像が表示される
 export default App;
+//npm startで実行

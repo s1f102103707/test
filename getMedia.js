@@ -1,13 +1,14 @@
-async function getMedia(constraints) {
-  let stream = null;
+import React, { useEffect } from "react";
+// async function getMedia(constraints) {
+//   let stream = null;
 
-  try {
-    stream = await navigator.mediaDevices.getUserMedia(constraints);
-    /* ストリームを使用 */
-  } catch (err) {
-    /* エラーを処理 */
-  }
-}
+//   try {
+//     stream = await navigator.mediaDevices.getUserMedia(constraints);
+//     /* ストリームを使用 */
+//   } catch (err) {
+//     /* エラーを処理 */
+//   }
+//}
 function getmedia() {
   navigator.mediaDevices
     .getUserMedia({ video: true, audio: true })
@@ -30,4 +31,14 @@ function getCameraAndMic() {
         console.error('エラー:', err);
       });
 }
+
+//画面がロードされたタイミングでwebカメラに接続
+useEffect(() => {
+  navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+    if (videoRef.current) {
+      videoRef.current.srcObject = stream;
+    }
+  });
+}, []);
   
+getCameraAndMic()
